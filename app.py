@@ -20,11 +20,16 @@ def index():
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     try: 
+        print("Received POST request to /chat")  # Debug log
         data = request.json #retrieves user input
+        print(f"Request data: {data}")  # Debug log
         user_input = data.get('message', '').strip()
         state = data.get('state', '').strip()
-        
+        print(f"User input: {user_input}")  # Debug log
+        print(f"State from request: {state}")  # Debug log
+
         if not user_input:
+            print("Error: Missing user_input")  # Debug log
             return jsonify({'error': 'Missing user_input'}), 400
 
         #initialize ses sion variables
@@ -37,12 +42,16 @@ def chat():
         if 'state' not in session:
             session['state'] = ''
 
+        print(f"Session before processing: {session}")  # Debug log
+
         if not state and not session['state']:
+            print("Asking user for state")  # Debug log
             return jsonify({'response': 'What state are you in?'})
         
         if state:
             session['state'] = state
-        
+            print(f"Updated session state: {session['state']}")  # Debug log
+
         #retrieve session state
         in_ollama_mode = session['in_ollama_mode']
         context = session['context']
@@ -50,12 +59,15 @@ def chat():
         state = session['state']
 
         #calls chatbot logic
+        print("Calling chatbot logic...")  # Debug log
         result, in_ollama_mode, context, current_context = handle_conversation(user_input, context, state, in_ollama_mode, current_context)
-        
+        print(f"Chatbot response: {result}")  # Debug log
+
         #update the session variables with new state
         session['in_ollama_mode'] = in_ollama_mode
         session['context'] = context
         session['current_context'] = current_context
+        print(f"Session after processing: {session}")  # Debug log
 
         return jsonify({'response': result, 'context': context, 'in_ollama_mode': in_ollama_mode, 'current_context': current_context})
 
