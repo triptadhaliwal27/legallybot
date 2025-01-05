@@ -1,0 +1,113 @@
+{
+  "intents": [
+    {
+      "tag": "greetings",
+      "patterns": ["hello", "hey", "hi", "good day", "Greetings", "what's up?", "how is it going?"],
+      "response": ["Hello! How can I assist you with your legal needs today?", "Hey, how can I help with your legal questions today?"]
+    },
+    {
+      "tag": "goodbye",
+      "patterns": ["bye", "goodbye", "see you", "take care", "catch you later", "see you soon", "exit", "quit", "farewell"],
+      "response": ["Goodbye! If you need legal help in the future, feel free to ask.", "Take care! Don't hesitate to reach out if you have more questions."]
+    },
+    {
+      "tag": "thanks",
+      "patterns": ["thank you", "thanks", "thanks a lot", "I appreciate it", "thank you so much", "thanks for your help"],
+      "response": ["You're welcome! I'm here if you need anything else.", "No problem! Glad to be of assistance."]
+    },
+    {
+      "tag": "confirmation",
+      "patterns": ["yes", "yeah", "yup", "of course", "sure", "definitely"],
+      "responses": ["Great! Let me help you with that.", "Got it! Let's continue."]
+    },
+    {
+      "tag": "no_answer",
+      "patterns": ["I don't understand", "can you explain that again?", "I don't get it", "what does that mean?", "I'm confused"],
+      "response": ["Sorry if I wasn't clear. Can you clarify your question?", "I may have misunderstood. Could you ask that differently?"]
+    },
+    {
+      "tag": "help",
+      "patterns": ["help", "can you help me?", "I need help", "what can you do?", "assist me", "can you guide me?"],
+      "response": ["Of course! I'm here to help with your legal questions. What do you need assistance with?", "I can assist you with a variety of legal topics, such as contracts, tenant rights, and more."]
+    },
+    {
+      "tag": "legal_terms",
+      "patterns": ["What does 'due process' mean?", "What is 'liability'?", "Can you explain negligence?", "What is the difference between a felony and a misdemeanor?"],
+      "response": [
+        "'Due process' refers to the legal requirement that the state must respect all legal rights owed to a person.",
+        "'Liability' refers to the state of being legally responsible for something, such as an accident or breach of contract.",
+        "'Negligence' refers to the failure to take proper care in doing something, resulting in harm or injury to others."
+      ]
+    },
+    {
+      "tag": "small_talk",
+      "patterns": ["how are you?", "how's it going?", "what's up?", "how's your day?", "how are you doing?"],
+      "response": ["I'm just a chatbot, but I'm doing well! How about you?", "I'm here to help! What's on your mind?"]
+    },
+    {
+      "tag": "location_help",
+      "patterns": ["Where can I find a lawyer?", "How do I find legal help in my area?", "Do you know any lawyers near me?", "Can you refer me to a lawyer?"],
+      "response": [
+        "You can search for lawyers through online directories or contact your local bar association for recommendations.",
+        "I can suggest resources for finding a lawyer, but I can’t offer specific legal referrals."
+      ]
+    },
+    {
+      "tag": "wrongful_termination",
+      "patterns": ["What is wrongful termination?", "Can I sue my employer for firing me?", "What constitutes wrongful termination?", "Can an employer fire you without reason?"],
+      "response": [
+        "Wrongful termination occurs when an employee is fired for illegal reasons, such as discrimination, retaliation, or violating employment laws.",
+        "In most cases, an employer can fire you for any reason, unless you're protected by a contract or laws that prevent discrimination."
+      ]
+    },
+    {
+      "tag": "contract_advice",
+      "patterns": ["What should I include in a contract?", "How do I write a contract?", "What makes a contract legally binding?", "What are the essentials for a contract?"],
+      "response": [
+        "A legally binding contract typically includes an offer, acceptance, consideration (something of value), and mutual intent to be bound by the agreement.",
+        "To write a contract, you'll need to outline the terms and conditions, clearly stating both parties' obligations and rights."
+      ]
+    },
+    {
+      "tag": "tenant_rights",
+      "patterns": ["What are my rights as a tenant?", "Do I need to pay rent if the apartment is not livable?", "Can my landlord evict me without notice?", "What are landlord obligations?"],
+      "response": [
+        "Tenant rights vary by location, but in general, tenants have the right to a habitable living space, privacy, and protection from unlawful eviction.",
+        "If your apartment is not livable, you may be able to withhold rent or request repairs. It’s best to consult local laws."
+      ]
+    },
+    {
+      "tag": "intellectual_property",
+      "patterns": ["What is intellectual property?", "How can I protect my invention?", "Do I need a patent?", "Can I copyright my idea?"],
+      "response": [
+        "Intellectual property refers to creations of the mind like inventions, artistic works, and designs. You can protect your work through patents, copyrights, or trademarks.",
+        "To protect an invention, you should consider applying for a patent. Copyrights can protect artistic works like music, books, and films."
+      ]
+    },
+    {
+      "tag": "employment_law",
+      "patterns": ["What are my rights at work?", "Can my boss fire me without reason?", "How do I file a workplace complaint?"],
+      "response": [
+        "Employment laws protect workers from discrimination, ensure fair wages, and regulate working conditions. If you feel your rights have been violated, you should consult a labor attorney.",
+        "Wrongful termination occurs when you are fired for illegal reasons, such as discrimination or retaliation. It’s advisable to gather evidence and seek legal counsel."
+      ]
+    },
+    {
+      "tag": "legal_referrals",
+      "patterns": ["Can you recommend a lawyer?", "I need legal help, where do I start?", "How do I find an attorney?", "Can I get a free legal consultation?"],
+      "response": [
+        "I can guide you to resources that may help, but it's important to consult a qualified attorney who specializes in the relevant area of law.",
+        "You can start by looking for lawyers in your area through bar associations or legal service websites. Some lawyers offer free consultations."
+      ]
+    },
+    {
+      "tag": "ask_for_name",
+      "patterns": ["What is your name?", "Can you tell me your name?", "May I know your name?", "Who am I speaking with?", "What should I call you?"],
+      "response": [
+        "I am LegallyBot - a legal chatbot here to help you with your questions. What’s your name?",
+        "You can call me LegallyBot! What’s your name?",
+        "My name is LegallyBot. I’d be happy to know your name so I can assist you better. What’s your name?"
+      ]
+    }
+  ]
+}
