@@ -219,9 +219,9 @@ def handle_conversation(user_input, context, state, in_ollama_mode, current_cont
         return result, in_ollama_mode, context, current_context
     
 
-try:
-    handle_conversation()
-except Exception as e:
-    print("An error has occured: ", e)
-    with open("error_log.txt", "a") as log_file:
-            log_file.write(f"Error: {e}\n")
+# try:
+#     handle_conversation()
+# except Exception as e:
+#     print("An error has occured: ", e)
+#     with open("error_log.txt", "a") as log_file:
+#             log_file.write(f"Error: {e}\n")

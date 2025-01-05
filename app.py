@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24) #sets a secret key for sessions
 CORS(app)
 
-app.config['CHAT_SESSION'] = 'sessiondata'
+app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
 
@@ -20,12 +20,12 @@ def index():
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
     try: 
-        data = "request.json" #retrieves user input
+        data = request.json #retrieves user input
         user_input = data.get('message', '').strip()
         state = data.get('state', '').strip()
-
-        if not user_input or not state:
-            return jsonify({'error': 'Missing user_input or state'}), 400
+        
+        if not user_input:
+            return jsonify({'error': 'Missing user_input'}), 400
 
         #initialize ses sion variables
         if 'in_ollama_mode' not in session:
@@ -34,11 +34,20 @@ def chat():
             session['context'] = ''
         if 'current_context' not in session:
             session['current_context'] = ''
+        if 'state' not in session:
+            session['state'] = ''
 
+        if not state and not session['state']:
+            return jsonify({'response': 'What state are you in?'})
+        
+        if state:
+            session['state'] = state
+        
         #retrieve session state
         in_ollama_mode = session['in_ollama_mode']
         context = session['context']
         current_context = session['current_context']
+        state = session['state']
 
         #calls chatbot logic
         result, in_ollama_mode, context, current_context = handle_conversation(user_input, context, state, in_ollama_mode, current_context)
