@@ -4,6 +4,7 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
 let state = "";
+let stateSet = false;
 
 //add user messages to chat window (dynamically adds divs for message)
 function addMessage(sender, text) {
@@ -15,7 +16,11 @@ function addMessage(sender, text) {
     chatWindow.scrollTop = chatWindow.scrollHeight; //scrolls to bottom of chat window
 }
 
-//function to send messages
+function showWelcomeMessage() {
+    addMessage('bot', 'Welcome to LegallyBot! What state are you in?');
+}
+
+ //function to send messages
 async function sendMessage() {
     console.log("Send button clicked or Enter key pressed!"); // Debug log
     const message = userInput.value.trim(); //get user input
@@ -29,8 +34,8 @@ async function sendMessage() {
 
     const payload = {
         message: message,
-        state: state
-    };
+        state: !stateSet ? message : state //if state not set, set the message as the state
+   };
 
     console.log("Payload being sent to backend:", payload); // Debug log
 
@@ -49,6 +54,14 @@ async function sendMessage() {
         console.log("Parsed response data:", data); // Debug log
 
         //add the bot's response
+        if (data.needs_state) {
+            addMessage('bot', data.reponse)
+        }
+        else if (data.state_confirmed){
+            state = payload.state;
+            stateSet = true;
+            addMessage('bot', data.response)
+        }
         if (data.response) {
             addMessage('bot', data.response);
         }
@@ -56,6 +69,7 @@ async function sendMessage() {
             addMessage('bot', `Error: ${data.error}`);
         }
 
+        //update state if provided in response
         if (data.state) {
             state = data.state; // Save the state for future requests
             console.log("Updated state to:", state); // Debug log
@@ -63,7 +77,7 @@ async function sendMessage() {
     }
     catch (error) {
         console.error('Error communicating with backend:', error);
-        addMessage('bot', 'An error occurred. Please try again later.');
+        addMessage('bot', 'An error occurred. Please try again late');
     }
 }
 
@@ -74,3 +88,5 @@ userInput.addEventListener('keypress', (e) => {
         sendMessage();
     }
 });
+
+document.addEventListener('DOMContentLoaded', showWelcomeMessage)
