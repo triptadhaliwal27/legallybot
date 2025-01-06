@@ -4,7 +4,8 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
 let state = "";
-let stateSet = false;
+let needsState = false;
+let stateConfirmed = false;
 
 //add user messages to chat window (dynamically adds divs for message)
 function addMessage(sender, text) {
@@ -34,7 +35,7 @@ async function sendMessage() {
 
     const payload = {
         message: message,
-        state: !stateSet ? message : state //if state not set, set the message as the state
+        state: needsState ? message : state //if state not set, set the message as the state
    };
 
     console.log("Payload being sent to backend:", payload); // Debug log
@@ -55,14 +56,16 @@ async function sendMessage() {
 
         //add the bot's response
         if (data.needs_state) {
+            needsState = true;
             addMessage('bot', data.reponse)
         }
         else if (data.state_confirmed){
             state = payload.state;
-            stateSet = true;
+            needsState = false;
+            stateConfirmed = true;
             addMessage('bot', data.response)
         }
-        if (data.response) {
+        else if (data.response) {
             addMessage('bot', data.response);
         }
         else if (data.error) {

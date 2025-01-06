@@ -19,58 +19,79 @@ def index():
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
-    try: 
-        print("Received POST request to /chat")  # Debug log
-        data = request.json #retrieves user input
+    try:
+        print("\n=== New Chat Request ===")
+        print("Received POST request to /chat")
+        print("Session contents:", dict(session))  # Print entire session
+        
+        data = request.json
         user_input = data.get('message', '').strip()
         state = data.get('state', '').strip()
-        print(f"Request data: {data}")  # Debug log
-        print(f"User input: {user_input}")  # Debug log
-        print(f"State from request: {state}")  # Debug log
+        print(f"Request data: {data}")
+        print(f"User input: {user_input}")
+        print(f"State from request: {state}")
 
-        #initialize session variables if not yet initialized
+        # Check initialization
         if 'initialized' not in session:
+            print("Initializing new session")
             session['in_ollama_mode'] = False
             session['context'] = ''
             session['state'] = ''
             session['current_context'] = ''
             session['initialized'] = True
-            return jsonify({'response': 'What state are you in?', 'needs_state': True})
+            response = {'response': 'What state are you in?', 'needs_state': True}
+            print("Sending initial response:", response)
+            return jsonify(response)
 
-        #set the state
-        if not session['state'] and state:
-            session['state'] = state
-            return jsonify({
-                'response': f'Thanks! You\'ve set your state to {state}. What are you legal concerns?',
-                'state_confirmed': True
-            })
-        
-        if not session['state']:
-            return jsonify({'response': 'What state are you in?', 'needs_state': True})
-        
-        
-        #retrieve session state
-        in_ollama_mode = session['in_ollama_mode']
-        context = session['context']
-        current_context = session['current_context']
+        # Handle state setting
+        if not session.get('state'):
+            if not state:
+                print(f"Assuming user input as state: {user_input}")
+                state = user_input
+            if state:
+                print(f"Setting state to: {state}")
+                session['state'] = state
+                session.modified = True
+                response = {
+                    'response': f'Thanks! You\'ve set your state to {state}. What are your legal concerns?',
+                    'state_confirmed': True
+                }
+                print("Sending state confirmation:", response)
+                return jsonify(response)
+            else:
+                print("No state provided")
+                response = {'response': 'What state are you in?', 'needs_state': True}
+                print("Requesting state:", response)
+                return jsonify(response)
 
-        #calls chatbot logic
-        print("Calling chatbot logic...")  # Debug log
-        result, in_ollama_mode, context, current_context = handle_conversation(user_input, context, session['state'], in_ollama_mode, current_context)
-        print(f"Chatbot response: {result}")  # Debug log
+        print("Proceeding with chatbot logic...")
+        in_ollama_mode = session.get('in_ollama_mode', False)
+        context = session.get('context', '')
+        current_context = session.get('current_context', '')
 
-        #update the session variables with new state
+        result, in_ollama_mode, context, current_context = handle_conversation(
+            user_input, 
+            context, 
+            session['state'], 
+            in_ollama_mode, 
+            current_context
+        )
+
+        # Save updated session state
         session['in_ollama_mode'] = in_ollama_mode
         session['context'] = context
         session['current_context'] = current_context
-        session.modified = True
-        print(f"Session after processing: {session}")  # Debug log
 
-        return jsonify({'response': result, 'context': context, 'in_ollama_mode': in_ollama_mode, 'current_context': current_context})
-
+        # Return the chatbot's response to the frontend
+        response = {'response': result}
+        print("Chatbot response:", response)
+        return jsonify(response)
+ 
     except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({'error' : 'An error occurred while processing your request'})
+        print(f"Error in chat route: {e}")
+        import traceback
+        print(traceback.format_exc())  # Print full error traceback
+        return jsonify({'error': 'An error occurred while processing your request'})
     
 #start conversation
 if __name__ == '__main__':

@@ -206,17 +206,17 @@ def handle_conversation(user_input, context, state, in_ollama_mode, current_cont
             context, result = ollama_query(context, user_input, state)
             in_ollama_mode = True
     
-        if result is None:
-            result = "I'm sorry, I couldn't understand your request. Could you please rephrase?"
-            print("DEBUG: Default fallback response triggered")
+    if result is None:
+        result = "I'm sorry, I couldn't understand your request. Could you please rephrase?"
+        print("DEBUG: Default fallback response triggered")
 
-        print("LegallyBot: ", result)
+    #print("LegallyBot: ", result)
 
-        #if user put a goodbye/quit message or ollama generated a bye response
-        if ints and ints[0]['intent'] == "goodbye" and float(ints[0]['probability']) > 0.95:
-            return None, in_ollama_mode, context, current_context
-        
-        return result, in_ollama_mode, context, current_context
+    #if user put a goodbye/quit message or ollama generated a bye response
+    if ints and ints[0]['intent'] == "goodbye" and float(ints[0]['probability']) > 0.95:
+        return "Goodbye!", in_ollama_mode, context, current_context
+    
+    return result, in_ollama_mode, context, current_context
     
 
 # try:
