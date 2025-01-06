@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f4f4f9;
     margin: 0;
     height: 100vh;
@@ -9,8 +9,9 @@ body {
 }
 
 .chat-container {
-    width: 400 px;
-    height: 600 px;
+    width: 90%; 
+    max-width: 800px; 
+    height: 80vh; 
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
@@ -21,19 +22,20 @@ body {
 
 .chat-header {
     padding:15px;
-    background-color: #007bff;
-    color: white;
+    background-color: #ff7294	;
+    color: #ffffff;
     text-align: center;
+    font-weight: 500;
 }
 
 .chat-header h2 {
     margin: 0;
-    font-size: 20px;
+    font-size: 25px;
   }
   
   .chat-header p {
     margin: 0;
-    font-size: 12px;
+    font-size: 14px;
   }
   
   /* Chat window */
@@ -53,15 +55,19 @@ body {
   }
   
   .chat-bubble.user {
-    background-color: #4caf50;
-    color: white;
+    background-color: #E9C3CF;
+    font-weight: 400;
+    font-size: 16px;
+    color: #2D2D2D;
     align-self: flex-end;
     margin-left: auto;
   }
   
   .chat-bubble.bot {
-    background-color: #e5e5ea;
-    color: black;
+    background-color: #FADADD;
+    font-weight: 400;
+    font-size: 16px;
+    color: #6D6875;
     align-self: flex-start;
     margin-right: auto;
   }
@@ -70,20 +76,27 @@ body {
   .input-area {
     display: flex;
     padding: 10px;
+    font-weight: 400;
+    font-size: 16px;
     border-top: 1px solid #ddd;
+    color: #6D6875;
   }
   
   #user-input {
     flex: 1;
     padding: 10px;
+    font-weight: 400;
+    font-size: 16px;
     border: 1px solid #ddd;
     border-radius: 5px;
   }
   
   #send-btn {
-    background-color: #007bff;
-    color: white;
+    background-color: #ff7294;
+    font-weight: 600;
+    font-size: 16px;
     border: none;
+    color: white;
     border-radius: 5px;
     padding: 10px 20px;
     margin-left: 10px;
@@ -91,5 +104,6 @@ body {
   }
   
   #send-btn:hover {
-    background-color: #0056b3;
+    background-color: #E9C3CF;
+    color: #2D2D2D;
   }
