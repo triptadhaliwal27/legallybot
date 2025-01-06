@@ -135,7 +135,6 @@ def handle_conversation(user_input, context, state, in_ollama_mode, current_cont
     print("What are your legal concerns?")
     BASIC_INTENTS = ['greetings', 'goodbye', 'thanks', 'ask_for_name']
 
-    
     result = None
     ints = None
     #user_input = input("You: " ).strip()
@@ -214,7 +213,7 @@ def handle_conversation(user_input, context, state, in_ollama_mode, current_cont
 
     #if user put a goodbye/quit message or ollama generated a bye response
     if ints and ints[0]['intent'] == "goodbye" and float(ints[0]['probability']) > 0.95:
-        return "Goodbye!", in_ollama_mode, context, current_context
+      return "Goodbye!", in_ollama_mode, context, current_context
     
     return result, in_ollama_mode, context, current_context
     
