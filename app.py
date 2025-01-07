@@ -6,7 +6,7 @@ from flask_session import Session
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24) #sets a secret key for sessions
-CORS(app)
+CORS(app, supports_credentials=True)
 
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
@@ -27,10 +27,8 @@ def chat():
         
         data = request.json
         user_input = data.get('message', '').strip()
-        state = data.get('state', '').strip()
         print(f"Request data: {data}")
         print(f"User input: {user_input}")
-        print(f"State from request: {state}")
 
         # Check initialization
         if 'initialized' not in session:
@@ -40,30 +38,19 @@ def chat():
             session['state'] = ''
             session['current_context'] = ''
             session['initialized'] = True
-            response = {'response': 'What state are you in?', 'needs_state': True}
-            print("Sending initial response:", response)
-            return jsonify(response)
 
         # Handle state setting
         if not session.get('state'):
-            if not state:
-                print(f"Assuming user input as state: {user_input}")
-                state = user_input
-            if state:
-                print(f"Setting state to: {state}")
-                session['state'] = state
-                session.modified = True
-                response = {
-                    'response': f'Thanks! You\'ve set your state to {state}. What are your legal concerns?',
-                    'state_confirmed': True
-                }
-                print("Sending state confirmation:", response)
-                return jsonify(response)
-            else:
-                print("No state provided")
-                response = {'response': 'What state are you in?', 'needs_state': True}
-                print("Requesting state:", response)
-                return jsonify(response)
+            state = user_input
+            print(f"Setting state to: {state}")
+            session['state'] = state
+            session.modified = True
+            response = {
+                'response': f'Thanks! You\'ve set your state to {state}. What are your legal concerns?',
+                'state_confirmed': True
+            }
+            print("Sending state confirmation:", response)
+            return jsonify(response)
 
         print("Proceeding with chatbot logic...")
         in_ollama_mode = session.get('in_ollama_mode', False)
