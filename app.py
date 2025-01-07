@@ -15,6 +15,7 @@ Session(app)
 #top leval route
 @app.route('/')
 def index():
+    session.clear()
     return render_template('chat.html')
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -93,6 +94,12 @@ def chat():
         print(traceback.format_exc())  # Print full error traceback
         return jsonify({'error': 'An error occurred while processing your request'})
     
+
+@app.route('/reset', methods=['POST'])
+def reset_session():
+    session.clear()
+    return jsonify({'message': 'Session cleared successfully'})
+
 #start conversation
 if __name__ == '__main__':
     app.run()

@@ -91,5 +91,8 @@ userInput.addEventListener('keypress', (e) => {
         sendMessage();
     }
 });
+window.addEventListener('beforeunload', () => {
+    navigator.sendBeacon('/reset');
+});
 
 document.addEventListener('DOMContentLoaded', showWelcomeMessage)
