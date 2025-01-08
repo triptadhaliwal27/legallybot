@@ -58,9 +58,12 @@ body {
     background-color: #E9C3CF;
     font-weight: 400;
     font-size: 16px;
-    color: #2D2D2D;
+    color: #333333;
     align-self: flex-end;
     margin-left: auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
   }
   
   .chat-bubble.bot {
@@ -70,6 +73,9 @@ body {
     color: #6D6875;
     align-self: flex-start;
     margin-right: auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
   }
   
   /* Input area */
@@ -88,7 +94,7 @@ body {
     font-weight: 400;
     font-size: 16px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px;
   }
   
   #send-btn {
@@ -101,6 +107,8 @@ body {
     padding: 10px 20px;
     margin-left: 10px;
     cursor: pointer;
+    border-radius: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   #send-btn:hover {
