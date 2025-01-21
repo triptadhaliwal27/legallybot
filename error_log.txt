@@ -1,5 +1,0 @@
-Error: handle_conversation() missing 5 required positional arguments: 'user_input', 'context', 'state', 'in_ollama_mode', and 'current_context'
-<<<<<<< HEAD
-Error: handle_conversation() missing 5 required positional arguments: 'user_input', 'context', 'state', 'in_ollama_mode', and 'current_context'
-=======
->>>>>>> 5dffa64 (ran training model)
