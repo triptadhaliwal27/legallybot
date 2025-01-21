@@ -1,0 +1,117 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-container {
+    width: 90%; 
+    max-width: 800px; 
+    height: 80vh; 
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chat-header {
+    padding:15px;
+    background-color: #ff7294	;
+    color: #ffffff;
+    text-align: center;
+    font-weight: 500;
+}
+
+.chat-header h2 {
+    margin: 0;
+    font-size: 25px;
+  }
+  
+  .chat-header p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  /* Chat window */
+  .chat-window {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  .chat-bubble {
+    max-width: 75%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    position: relative;
+    word-wrap: break-word;
+  }
+  
+  .chat-bubble.user {
+    background-color: #E9C3CF;
+    font-weight: 400;
+    font-size: 16px;
+    color: #333333;
+    align-self: flex-end;
+    margin-left: auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+  }
+  
+  .chat-bubble.bot {
+    background-color: #FADADD;
+    font-weight: 400;
+    font-size: 16px;
+    color: #6D6875;
+    align-self: flex-start;
+    margin-right: auto;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px 20px;
+  }
+  
+  /* Input area */
+  .input-area {
+    display: flex;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    border-top: 1px solid #ddd;
+    color: #6D6875;
+  }
+  
+  #user-input {
+    flex: 1;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+  
+  #send-btn {
+    background-color: #ff7294;
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  #send-btn:hover {
+    background-color: #E9C3CF;
+    color: #2D2D2D;
+  }

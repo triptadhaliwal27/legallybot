@@ -129,100 +129,98 @@ def ollama_query(context, user_input, state):
         return context, "Sorry, I could not process your request"
 
 
-def handle_conversation():
+def handle_conversation(user_input, context, state, in_ollama_mode, current_context):
     print("Welcome to LegallyBot!")
-    state = input("Please enter your state (e.g., New Jersey): ").strip()
+    #state = input("Please enter your state (e.g., New Jersey): ").strip()
     print("What are your legal concerns?")
-    context = ""
-    in_ollama_mode = False
-    current_context = ""
     BASIC_INTENTS = ['greetings', 'goodbye', 'thanks', 'ask_for_name']
 
-    while True:
-        result = None
-        ints = None
-        user_input = input("You: " ).strip()
-        
-        #debugging
-        print(f"DEBUG: Predicted intents: {ints}")  # Debugging
-        print(f"DEBUG: User input: {user_input}")
+    result = None
+    ints = None
+    #user_input = input("You: " ).strip()
+    
+    #debugging
+    print(f"DEBUG: Predicted intents: {ints}")  # Debugging
+    print(f"DEBUG: User input: {user_input}")
 
 
-        if not user_input:
-            user_input = input("Sorry, I didn't catch that. You: ")
+    # if not user_input:
+    #     use_input = input("Sorry, I didn't catch that. You: ")
 
-        '''
-            # need to check the current context of the ollama by putting it into predict classes, 
-            # and if the new context is different from the current context at any point, 
-            # and if the threshold is under 0.9 (i.e., the intent is not in my list of intents
-            or low confidence)
-            # need to stay in ollama mode
-            #
-            # otherwise send it to my model
-        '''
-        
-        if in_ollama_mode:
-            print("DEBUG: conversation in ollama mode")
-            context, result = ollama_query(context, user_input, state)
-            try:
-                ints = predict_class(user_input, current_context) #Predict the intent of the user's message
-                print(f"DEBUG: Predicted intents in ollama mode: {ints}")  # Debugging
-            except Exception as e:
-                print(f"Error predicting intent in ollama mode: {e}")
-                ints = []  # Set `ints` to an empty list if prediction fails
+    '''
+        # need to check the current context of the ollama by putting it into predict classes, 
+        # and if the new context is different from the current context at any point, 
+        # and if the threshold is under 0.9 (i.e., the intent is not in my list of intents
+        or low confidence)
+        # need to stay in ollama mode
+        #
+        # otherwise send it to my model
+    '''
+    
+    if in_ollama_mode:
+        print("DEBUG: conversation in ollama mode")
+        context, result = ollama_query(context, user_input, state)
+        try:
+            ints = predict_class(user_input, current_context) #Predict the intent of the user's message
+            print(f"DEBUG: Predicted intents in ollama mode: {ints}")  # Debugging
+        except Exception as e:
+            print(f"Error predicting intent in ollama mode: {e}")
+            ints = []  # Set `ints` to an empty list if prediction fails
 
 
-            if ints and float(ints[0]['probability']) > 0.9 and ints[0]['intent'] in BASIC_INTENTS:
-                print(f"DEBUG: Basic intent, exiting ollama mode: {result}")
-                in_ollama_mode = False
-                result = get_response(ints, intents) #pass in intents and probabilities to get response
-                context = context_update(context, user_input, result)
-                
-            else:
-                print("DEBUG: Staying in Ollama mode")
-                context, result = ollama_query(context, user_input, state)
-
+        if ints and float(ints[0]['probability']) > 0.9 and ints[0]['intent'] in BASIC_INTENTS:
+            print(f"DEBUG: Basic intent, exiting ollama mode: {result}")
+            in_ollama_mode = False
+            result = get_response(ints, intents) #pass in intents and probabilities to get response
+            context = context_update(context, user_input, result)
+            
         else:
-            try:
-                ints = predict_class(user_input, current_context) #Predict the intent of the user's message
-                print(f"DEBUG: Predicted intents: {ints}")  # Debugging
-            except Exception as e:
-                print(f"Error predicting intent: {e}")
-                ints = []  # Set `ints` to an empty list if prediction fails
-        
-            if len(ints) > 1 and (float(ints[0]['probability']) - float(ints[1]['probability'])) < 0.1:
-                    print("DEBUG: Requesting clarification")
-                    context, result = ollama_query(context, user_input, state)
-                    in_ollama_mode = True
+            print("DEBUG: Staying in Ollama mode")
+            context, result = ollama_query(context, user_input, state)
 
-            #use home-made model if the intent with the highest probability has a probability higher than confidence thresholf of 0.8
-            #high confidence
-            elif ints and float(ints[0]['probability']) > 0.9: 
-                result = get_response(ints, intents) #pass in intents and probabilities to get response
-                print(f"DEBUG: Intent-based response: {result}")
-                context = context_update(context, user_input, result)
-                current_context = ints[0]['intent']
-           
-            #low confidence
-            else: 
-                print("DEBUG: Falling back to Ollama (no intent detected)")
+    else:
+        try:
+            ints = predict_class(user_input, current_context) #Predict the intent of the user's message
+            print(f"DEBUG: Predicted intents: {ints}")  # Debugging
+        except Exception as e:
+            print(f"Error predicting intent: {e}")
+            ints = []  # Set `ints` to an empty list if prediction fails
+    
+        if len(ints) > 1 and (float(ints[0]['probability']) - float(ints[1]['probability'])) < 0.1:
+                print("DEBUG: Requesting clarification")
                 context, result = ollama_query(context, user_input, state)
                 in_ollama_mode = True
+
+        #use home-made model if the intent with the highest probability has a probability higher than confidence thresholf of 0.8
+        #high confidence
+        elif ints and float(ints[0]['probability']) > 0.9: 
+            result = get_response(ints, intents) #pass in intents and probabilities to get response
+            print(f"DEBUG: Intent-based response: {result}")
+            context = context_update(context, user_input, result)
+            current_context = ints[0]['intent']
         
-        if result is None:
-            result = "I'm sorry, I couldn't understand your request. Could you please rephrase?"
-            print("DEBUG: Default fallback response triggered")
+        #low confidence
+        else: 
+            print("DEBUG: Falling back to Ollama (no intent detected)")
+            context, result = ollama_query(context, user_input, state)
+            in_ollama_mode = True
+    
+    if result is None:
+        result = "I'm sorry, I couldn't understand your request. Could you please rephrase?"
+        print("DEBUG: Default fallback response triggered")
 
-        print("LegallyBot: ", result)
+    #print("LegallyBot: ", result)
 
-        #if user put a goodbye/quit message or ollama generated a bye response
-        if ints and ints[0]['intent'] == "goodbye" and float(ints[0]['probability']) > 0.95:
-            return
+    #if user put a goodbye/quit message or ollama generated a bye response
+    if ints and ints[0]['intent'] == "goodbye" and float(ints[0]['probability']) > 0.95:
+      return "Goodbye!", in_ollama_mode, context, current_context
+    
+    return result, in_ollama_mode, context, current_context
     
 
-try:
-    handle_conversation()
-except Exception as e:
-    print("An error has occured: ", e)
-    with open("error_log.txt", "a") as log_file:
-            log_file.write(f"Error: {e}\n")
+# try:
+#     handle_conversation()
+# except Exception as e:
+#     print("An error has occured: ", e)
+#     with open("error_log.txt", "a") as log_file:
+#             log_file.write(f"Error: {e}\n")
