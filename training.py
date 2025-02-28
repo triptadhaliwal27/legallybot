@@ -1,4 +1,12 @@
 import nltk
+import nltk
+
+# Check if resources are available before downloading
+if not all(nltk.data.find(path) for path in ['tokenizers/punkt_tab', 'corpora/wordnet', 'corpora/stopwords']):
+    nltk.download('punkt_tab')
+    nltk.download('wordnet')
+    nltk.download('stopwords')
+    
 # import ssl
 
 # try:

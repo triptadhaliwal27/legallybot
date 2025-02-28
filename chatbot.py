@@ -6,6 +6,34 @@ import numpy as np
 import nltk
 from nltk.stem import WordNetLemmatizer
 
+import subprocess
+import requests
+import time
+
+OLLAMA_URL = "http://localhost:11434"
+
+def is_ollama_running():
+    try:
+        response = requests.get(f"{OLLAMA_URL}/api/tags", timeout=2)
+        return response.status_code == 200
+    except requests.exceptions.RequestException:
+        return False
+
+def start_ollama():
+    print("Starting Ollama...")
+    subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    time.sleep(5)  # Give it a few seconds to start
+
+if not is_ollama_running():
+    start_ollama()
+
+print("Ollama is running!")
+
+import ollama 
+
+# response = ollama.chat(model="llama3", messages=[{"role": "user", "content": "Hello"}])
+# print(response)
+
 from langchain_ollama import OllamaLLM
 from langchain_core.prompts import ChatPromptTemplate
 
