@@ -20,6 +20,22 @@ def is_ollama_running():
         return False
 
 def start_ollama():
+    try:
+        result = subprocess.run(
+            ["ollama", "list"], 
+            stdout=subprocess.PIPE, 
+            stderr=subprocess.PIPE, 
+            text=True
+        )
+        if "llama3.2" not in result.stdout:
+            print("Model llama3.2 not found. Installing it...")
+            subprocess.run(["ollama", "pull", "llama3.2"], check=True)
+        else:
+            print("Model llama3.2 is already installed.")
+    except FileNotFoundError:
+        print("Ollama is not installed. Please install Ollama first.")
+        return
+    
     print("Starting Ollama...")
     subprocess.Popen(["ollama", "serve"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     time.sleep(5)  # Give it a few seconds to start
